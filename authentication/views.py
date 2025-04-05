@@ -67,22 +67,3 @@ class LogoutView(APIView):
                 {'error': 'Invalid token'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-class TokenRefreshView(APIView):
-    def post(self, request):
-        try:
-            refresh_token = request.data.get('refresh')
-            token = RefreshToken(refresh_token)
-            return Response({
-                'tokens': {
-                    'access': str(token.access_token),
-                    'refresh': str(token)
-                }
-            })
-        except Exception as e:
-            return Response(
-                {'error': 'Invalid refresh token'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-
