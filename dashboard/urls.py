@@ -1,7 +1,11 @@
-from django.urls import path
-from .views import DashboardView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import DashboardView, BotChannelsViewSet, BotsAgentViewSet
 
-urlpatterns = [
-    path('', DashboardView.as_view(), name='dashboard'),
+router = DefaultRouter()
+router.register(r"channels", BotChannelsViewSet)
+router.register(r"bots", BotsAgentViewSet, basename="bots")
+
+urlpatterns = router.urls + [
+    path("", DashboardView.as_view(), name="dashboard"),
 ]
-
