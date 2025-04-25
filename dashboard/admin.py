@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import BotsAgent, BotChannels
+from .models import BotMessages, BotsAgent, BotChannels
 
 
 class BotChannelsAdmin(admin.ModelAdmin):
@@ -27,6 +27,12 @@ class BotsAgentAdmin(admin.ModelAdmin):
     search_fields = ("agent_id", "website", "cid", "user__username")
     ordering = ("-started_date",)
 
+class BotMessagesAdmin(admin.ModelAdmin):
+    list_display = ("conversation_id", "message", "channel", "type", "created_at")
+    list_filter = ("type", "created_at")
+    search_fields = ("conversation_id", "message", "channel__channel_name")
+    ordering = ("-created_at",)
 
 admin.site.register(BotsAgent, BotsAgentAdmin)
 admin.site.register(BotChannels, BotChannelsAdmin)
+admin.site.register(BotMessages, BotMessagesAdmin)

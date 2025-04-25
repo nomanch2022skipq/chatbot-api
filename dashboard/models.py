@@ -41,3 +41,49 @@ class BotsAgent(models.Model):
     class Meta:
         verbose_name = "Bot Agent"
         verbose_name_plural = "Bot Agents"
+
+
+class BotMessages(models.Model):
+    conversation_id = models.CharField(max_length=255, null=True, blank=True)
+    message = models.TextField()
+    channel = models.ForeignKey(
+        BotChannels, on_delete=models.CASCADE, related_name="messages"
+    )
+    type = models.CharField(
+        max_length=50, choices=[("incoming", "Incoming"), ("outgoing", "Outgoing")]
+    )
+    agent = models.ForeignKey(
+        BotsAgent,
+        on_delete=models.CASCADE,
+        related_name="messages",
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Message from {self.agent_id} at {self.created_at}"
+
+    class Meta:
+        verbose_name = "Bot Message"
+        verbose_name_plural = "Bot Messages"
+
+
+class BotShare(models.Model):
+    bot = models.ForeignKey(BotsAgent, on_delete=models.CASCADE, related_name="shares")
+    shared_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="shared_bots"
+    )
+    shared_with = models.EmailField()
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.bot.agent_name} shared with {self.shared_with}"
+
+    class Meta:
+        verbose_name = "Bot Share"
+        verbose_name_plural = "Bot Shares"
+        unique_together = ("bot", "shared_with")

@@ -49,6 +49,7 @@ EXTERNAL_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",  # Changed from drf-yasg to drf_yasg
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS + INTERNAL_APPS
@@ -68,7 +69,7 @@ ROOT_URLCONF = "chatbot.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "authentication" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -138,13 +139,19 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Custom user model
 AUTH_USER_MODEL = "authentication.User"
 
+# Authentication URLs
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/swagger/"
+LOGOUT_REDIRECT_URL = "/swagger/"  # Fixed from "accounts/logout/"
+
+# Rest Framework Settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
 SIMPLE_JWT = {
@@ -158,4 +165,12 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
+}
+
+SWAGGER_SETTINGS = {
+    "LOGIN_URL": LOGIN_URL,
+    "USE_SESSION_AUTH": True,
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
 }
