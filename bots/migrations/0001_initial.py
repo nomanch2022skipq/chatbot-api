@@ -29,20 +29,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='DashboardStats',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('last_updated', models.DateTimeField(auto_now=True)),
-                ('total_messages', models.IntegerField(default=0)),
-                ('active_bots', models.IntegerField(default=0)),
-                ('total_users', models.IntegerField(default=0)),
-            ],
-            options={
-                'verbose_name': 'Dashboard Statistic',
-                'verbose_name_plural': 'Dashboard Statistics',
-            },
-        ),
-        migrations.CreateModel(
             name='BotsAgent',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -60,28 +46,11 @@ class Migration(migrations.Migration):
                 ('fine_tune_stage', models.IntegerField(default=0)),
                 ('custom_persona', models.CharField(blank=True, max_length=255, null=True)),
                 ('is_deleted', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='bots_owned', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Bot Agent',
                 'verbose_name_plural': 'Bot Agents',
-            },
-        ),
-        migrations.CreateModel(
-            name='BotMessages',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('conversation_id', models.CharField(blank=True, max_length=255, null=True)),
-                ('message', models.TextField()),
-                ('type', models.CharField(choices=[('incoming', 'Incoming'), ('outgoing', 'Outgoing')], max_length=50)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('channel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='dashboard.botchannels')),
-                ('agent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='dashboard.botsagent')),
-            ],
-            options={
-                'verbose_name': 'Bot Message',
-                'verbose_name_plural': 'Bot Messages',
             },
         ),
     ]

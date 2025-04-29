@@ -22,7 +22,10 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("authentication.urls")),
-    path("api/dashboard/", include("dashboard.urls")),
+    path("api/bots/", include("bots.urls")),
+    path("api/messages/", include("bot_messages.urls")),
+    path("api/sharing/", include("sharing.urls")),
+    path("api/channels/", include("channels.urls")),
     path("api-auth/", include("rest_framework.urls")),  # DRF's built-in auth views
     path("accounts/login/", CustomLoginView.as_view(), name="login"),
     path("accounts/logout/", CustomLogoutView.as_view(), name="logout"),

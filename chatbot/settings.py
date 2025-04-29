@@ -43,13 +43,17 @@ INSTALLED_APPS = [
 INTERNAL_APPS = [
     "dashboard",
     "authentication",
+    "bots",
+    "bot_messages",
+    "sharing",
+    "channels",
 ]
 
 EXTERNAL_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    "drf_yasg",  # Changed from drf-yasg to drf_yasg
+    "drf_yasg",
 ]
 
 INSTALLED_APPS = INSTALLED_APPS + EXTERNAL_APPS + INTERNAL_APPS
@@ -142,7 +146,7 @@ AUTH_USER_MODEL = "authentication.User"
 # Authentication URLs
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/swagger/"
-LOGOUT_REDIRECT_URL = "/swagger/"  # Fixed from "accounts/logout/"
+LOGOUT_REDIRECT_URL = "/swagger/"
 
 # Rest Framework Settings
 REST_FRAMEWORK = {
