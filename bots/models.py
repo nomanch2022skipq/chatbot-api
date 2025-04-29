@@ -23,7 +23,6 @@ class BotsAgent(models.Model):
         blank=True,
         related_name="bots_owned",
     )
-    channels = models.ManyToManyField(Channel, related_name="bots")
     fine_tune_stage = models.IntegerField(default=0)
     custom_persona = models.CharField(max_length=255, null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
